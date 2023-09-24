@@ -1,0 +1,14 @@
+
+/* Define the media query for screens narrower than 768px */
+@media (max-width: 768px) {
+    /* Style for color swatches */
+    .color-swatches {
+        display: flex;
+        flex-direction: column; /* Stack swatches vertically */
+    }
+
+    /* Style for size dropdown */
+    .size-dropdown {
+        margin-top: 10px; /* Add some spacing between swatches and dropdown */
+    }
+}
