@@ -117,19 +117,32 @@ class Custom_Variations_Display {
 
     // Create the custom settings page content.
     public function create_custom_settings_page() {
+        $enabled = get_option('custom_variations_display_enabled', '0');
         ?>
         <div class="wrap">
             <h2><?php _e('Custom Variations Display Settings', 'custom-variations-display'); ?></h2>
             <form method="post" action="options.php">
                 <?php
-                    settings_fields('woocommerce_custom_variations_display');
-                    do_settings_sections('woocommerce_custom_variations_display');
-                    submit_button();
+                settings_fields('woocommerce_custom_variations_display');
+                do_settings_sections('woocommerce_custom_variations_display');
+                ?>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php _e('Enable Custom Variations Display', 'custom-variations-display'); ?></th>
+                        <td>
+                            <label><input type="radio" name="custom_variations_display_enabled" value="1" <?php checked($enabled, '1'); ?> /> <?php _e('Enable', 'custom-variations-display'); ?></label><br />
+                            <label><input type="radio" name="custom_variations_display_enabled" value="0" <?php checked($enabled, '0'); ?> /> <?php _e('Disable', 'custom-variations-display'); ?></label>
+                        </td>
+                    </tr>
+                </table>
+                <?php
+                submit_button();
                 ?>
             </form>
         </div>
         <?php
     }
+    
 
     // Sanitize the custom setting.
     public function sanitize_custom_setting($input) {
