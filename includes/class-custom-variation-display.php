@@ -25,12 +25,37 @@ class Custom_Variations_Display {
 
     public function display_color_swatches() {
         global $product;
-        if ($product->is_type('variable')) {
-            // Code to display color swatches here.
-            echo '<div class="color-swatches">'; // Replace with your HTML markup.
-            echo 'Color Swatches Here'; // Replace with swatches display logic.
-            echo '</div>';
+
+    // Check if the product is variable.
+    if ($product->is_type('variable')) {
+        // Get available variations for the product.
+        $variations = $product->get_available_variations();
+
+        // Initialize an array to store unique color attributes.
+        $unique_colors = array();
+
+        // Iterate through variations to collect unique color attributes.
+        foreach ($variations as $variation) {
+            $attributes = $variation['attributes'];
+            if (isset($attributes['attribute_pa_color'])) {
+                $color = get_term_by('slug', $attributes['attribute_pa_color'], 'pa_color');
+                if ($color) {
+                    $unique_colors[$color->slug] = $color;
+                }
+            }
         }
+
+        // Display color swatches.
+        echo '<div class="color-swatches">';
+        foreach ($unique_colors as $color) {
+            $color_slug = $color->slug;
+            $color_name = $color->name;
+            // Generate swatch HTML. Replace with your desired markup.
+            echo '<div class="color-swatch" data-color="' . $color_slug . '">' . $color_name . '</div>';
+        }
+        echo '</div>';
+    }
+    
     }
 
     public function display_size_dropdown() {
@@ -46,7 +71,7 @@ class Custom_Variations_Display {
 
     // Enqueue the CSS file.
     public function enqueue_styles() {
-        wp_enqueue_style('custom-variations-display-style', plugin_dir_url(__FILE__) . 'assets/css/custom-variations-display.css');
+        wp_enqueue_style('custom-variations-display-style', plugin_dir_url(__FILE__) . 'custom-variations-display.css');
     }
 
 
